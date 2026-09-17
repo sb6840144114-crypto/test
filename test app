@@ -1,787 +1,550 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ComplaintHub - ระบบร้องเรียนออนไลน์</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Kanit', sans-serif;
-    background: #050b14;
-    color: #fff;
-    min-height: 100vh;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background:
-        radial-gradient(circle at 10% 10%, rgba(0, 212, 255, .18), transparent 30%),
-        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, .18), transparent 30%),
-        linear-gradient(135deg, #050b14, #0b1424, #090b19);
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    opacity: .08;
-    background-image:
-        linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px);
-    background-size: 40px 40px;
-}
-
-.container {
-    width: min(1150px, 92%);
-    margin: auto;
-}
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 18px 0;
-    background: rgba(5, 11, 20, .8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.logo-icon {
-    width: 45px;
-    height: 45px;
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #00d4ff, #7c3aed);
-    box-shadow: 0 0 30px rgba(0,212,255,.3);
-}
-
-.logo span {
-    color: #00d4ff;
-}
-
-.admin-btn {
-    color: #a8b7ca;
-    text-decoration: none;
-    padding: 8px 16px;
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 20px;
-    font-size: 13px;
-}
-
-.hero {
-    min-height: 580px;
-    display: grid;
-    grid-template-columns: 1.2fr .8fr;
-    gap: 50px;
-    align-items: center;
-}
-
-.tag {
-    color: #00d4ff;
-    font-size: 13px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-}
-
-.hero h1 {
-    font-size: clamp(45px, 7vw, 80px);
-    line-height: 1;
-    margin-bottom: 25px;
-}
-
-.hero h1 span {
-    background: linear-gradient(90deg, #00d4ff, #8b5cf6);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.hero p {
-    color: #91a5bb;
-    line-height: 1.9;
-    font-size: 17px;
-    max-width: 650px;
-}
-
-.primary-btn {
-    border: none;
-    color: white;
-    background: linear-gradient(135deg, #00c6ff, #7c3aed);
-    padding: 13px 22px;
-    border-radius: 13px;
-    font-family: inherit;
-    font-size: 15px;
-    cursor: pointer;
-    transition: .25s;
-}
-
-.primary-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0,198,255,.25);
-}
-
-.hero .primary-btn {
-    margin-top: 25px;
-}
-
-.hero-card {
-    padding: 40px;
-    border-radius: 28px;
-    background: rgba(13, 28, 46, .7);
-    border: 1px solid rgba(255,255,255,.1);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 30px 80px rgba(0,0,0,.3);
-}
-
-.hero-icon {
-    font-size: 55px;
-    margin-bottom: 20px;
-}
-
-.hero-card h2 {
-    margin-bottom: 10px;
-}
-
-.hero-card p {
-    font-size: 14px;
-    color: #8196ac;
-}
-
-.line {
-    height: 1px;
-    background: rgba(255,255,255,.1);
-    margin: 25px 0;
-}
-
-.section {
-    margin: 80px 0;
-}
-
-.section-title {
-    margin-bottom: 22px;
-}
-
-.section-title h2 {
-    font-size: 30px;
-}
-
-.section-title p {
-    color: #71869d;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-.card {
-    padding: 30px;
-    border-radius: 25px;
-    background: rgba(11, 27, 44, .75);
-    border: 1px solid rgba(255,255,255,.08);
-    backdrop-filter: blur(18px);
-    box-shadow: 0 20px 60px rgba(0,0,0,.2);
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.field.full {
-    grid-column: 1 / -1;
-}
-
-label {
-    color: #b8c8d9;
-    font-size: 14px;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    background: #071522;
-    border: 1px solid #1c354d;
-    color: white;
-    font-family: inherit;
-    outline: none;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: #00d4ff;
-    box-shadow: 0 0 0 3px rgba(0,212,255,.08);
-}
-
-textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.check {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin-top: 20px;
-    color: #71869c;
-}
-
-.check input {
-    width: auto;
-}
-
-.form-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin-top: 25px;
-}
-
-.form-bottom span {
-    color: #5f758b;
-    font-size: 12px;
-}
-
-.track-box {
-    display: flex;
-    gap: 10px;
-}
-
-.track-box input {
-    flex: 1;
-}
-
-.result {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.result h3 {
-    margin-bottom: 8px;
-}
-
-.result p {
-    color: #8195ab;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.status {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-}
-
-.pending {
-    color: #fbbf24;
-    background: rgba(251,191,36,.1);
-}
-
-.progress {
-    color: #00d4ff;
-    background: rgba(0,212,255,.1);
-}
-
-.done {
-    color: #34d399;
-    background: rgba(52,211,153,.1);
-}
-
-.cancel {
-    color: #fb7185;
-    background: rgba(251,113,133,.1);
-}
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.stat {
-    padding: 25px;
-    border-radius: 20px;
-    background: rgba(12,29,47,.75);
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.stat-title {
-    color: #70859b;
-    font-size: 13px;
-}
-
-.stat-number {
-    font-size: 36px;
-    font-weight: 700;
-    margin-top: 5px;
-}
-
-.stat:nth-child(1) .stat-number { color: #00d4ff; }
-.stat:nth-child(2) .stat-number { color: #fbbf24; }
-.stat:nth-child(3) .stat-number { color: #a78bfa; }
-.stat:nth-child(4) .stat-number { color: #34d399; }
-
-.complaint-list {
-    margin-top: 25px;
-}
-
-.complaint-item {
-    padding: 18px;
-    margin-bottom: 12px;
-    border-radius: 15px;
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.07);
-}
-
-.complaint-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.complaint-title {
-    font-weight: 500;
-}
-
-.complaint-meta {
-    color: #71869c;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    background: rgba(0,0,0,.75);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.show {
-    display: flex;
-}
-
-.modal-box {
-    width: min(450px,100%);
-    padding: 35px;
-    border-radius: 25px;
-    background: #0d1d2f;
-    border: 1px solid #29445e;
-    text-align: center;
-}
-
-.success-icon {
-    width: 65px;
-    height: 65px;
-    display: grid;
-    place-items: center;
-    margin: auto auto 15px;
-    border-radius: 50%;
-    color: #34d399;
-    background: rgba(52,211,153,.1);
-    font-size: 30px;
-}
-
-.ticket {
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: 12px;
-    background: #06111e;
-    color: #00d4ff;
-    font-size: 25px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-footer {
-    padding: 30px;
-    text-align: center;
-    border-top: 1px solid rgba(255,255,255,.08);
-    color: #52677d;
-    font-size: 12px;
-}
-
-@media(max-width:850px) {
-    .hero {
-        grid-template-columns: 1fr;
-        padding: 70px 0;
-    }
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-    .field.full {
-        grid-column: auto;
-    }
-    .dashboard {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media(max-width:550px) {
-    .hero h1 {
-        font-size: 48px;
-    }
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
-    .track-box {
-        flex-direction: column;
-    }
-    .form-bottom {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .complaint-top {
-        flex-direction: column;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบแจ้งเรื่องร้องเรียน | Premium Helpdesk</title>
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .gradient-bg {
+            background: radial-gradient(circle at top left, #a5b4fc, transparent 40%),
+                        radial-gradient(circle at bottom right, #f43f5e15, transparent 40%),
+                        #f8fafc;
+        }
+    </style>
 </head>
+<body class="gradient-bg min-h-screen font-sans text-slate-800 antialiased pb-12">
 
-<body>
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-200/60 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-rose-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-paper-plane text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-800 bg-clip-text text-transparent">VOICE PORTAL</h1>
+                    <p class="text-xs text-slate-500 font-light">ระบบรับเรื่องร้องเรียนและข้อเสนอแนะ</p>
+                </div>
+            </div>
 
-<header>
-    <div class="container nav">
-        <div class="logo">
-            <div class="logo-icon">⚡</div>
-            Complaint<span>Hub</span>
+            <div class="flex items-center gap-3">
+                <!-- Navigation Tabs -->
+                <nav class="flex bg-slate-200/60 p-1.5 rounded-2xl text-xs sm:text-sm font-medium">
+                    <button onclick="switchTab('submit')" id="tab-submit" class="px-4 py-2 rounded-xl transition-all shadow-sm bg-white text-indigo-600 font-semibold">
+                        <i class="fa-solid fa-pen-to-square mr-1.5"></i>แจ้งเรื่อง
+                    </button>
+                    <button onclick="switchTab('track')" id="tab-track" class="px-4 py-2 rounded-xl transition-all text-slate-600 hover:text-indigo-600">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i>ติดตามสถานะ
+                    </button>
+                    <button onclick="switchTab('admin')" id="tab-admin" class="px-4 py-2 rounded-xl transition-all text-slate-600 hover:text-indigo-600 flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>แอดมิน</span>
+                        <i id="adminLockIcon" class="fa-solid fa-lock text-[10px] text-slate-400"></i>
+                    </button>
+                </nav>
+
+                <!-- Admin Logout Button (Hidden by default) -->
+                <button id="adminLogoutBtn" onclick="adminLogout()" class="hidden px-3 py-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs font-semibold transition-all flex items-center gap-1.5 border border-rose-200">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">ออกจากระบบ</span>
+                </button>
+            </div>
         </div>
-        <a href="#dashboard" class="admin-btn">Dashboard</a>
-    </div>
-</header>
+    </header>
 
-<main class="container">
+    <main class="max-w-4xl mx-auto px-4 pt-8">
 
-    <section class="hero">
-        <div>
-            <div class="tag">ONLINE COMPLAINT SYSTEM</div>
-            <h1>เสียงของคุณ<br><span>มีความหมาย</span></h1>
-            <p>ระบบร้องเรียนออนไลน์ที่ช่วยให้คุณสามารถแจ้งปัญหา ส่งหลักฐาน และติดตามสถานะเรื่องร้องเรียนได้อย่างสะดวกและรวดเร็ว</p>
-            <button class="primary-btn" onclick="goToForm()">＋ แจ้งเรื่องร้องเรียน</button>
-        </div>
+        <!-- TAB 1: FORM (ส่งเรื่องร้องเรียน) -->
+        <section id="sec-submit" class="space-y-6">
+            <div class="text-center max-w-lg mx-auto mb-8">
+                <span class="text-xs font-semibold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Care & Hearing</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">ส่งเรื่องร้องเรียน / ข้อเสนอแนะ</h2>
+                <p class="text-slate-500 text-sm mt-1">ทุกความคิดเห็นของท่านจะถูกนำไปปรับปรุงแก้ไขอย่างเร่งด่วนและเป็นธรรม</p>
+            </div>
 
-        <div class="hero-card">
-            <div class="hero-icon">📢</div>
-            <h2>แจ้งเรื่องได้ง่าย</h2>
-            <p>กรอกข้อมูลออนไลน์ได้ตลอดเวลา</p>
-            <div class="line"></div>
-            <p>🔒 ข้อมูลถูกจัดเก็บใน Browser</p>
-            <div class="line"></div>
-            <p>🔎 สามารถติดตามเรื่องด้วยเลขคำร้อง</p>
-        </div>
-    </section>
-
-    <section class="section" id="formSection">
-        <div class="section-title">
-            <h2>📝 ส่งเรื่องร้องเรียน</h2>
-            <p>กรอกข้อมูลให้ครบถ้วนเพื่อให้สามารถตรวจสอบเรื่องได้</p>
-        </div>
-
-        <div class="card">
-            <form id="complaintForm">
-                <div class="form-grid">
-                    <div class="field">
-                        <label>ชื่อผู้ร้องเรียน *</label>
-                        <input type="text" id="name" placeholder="ชื่อ - นามสกุล" required>
-                    </div>
-
-                    <div class="field">
-                        <label>ช่องทางติดต่อ *</label>
-                        <input type="text" id="contact" placeholder="เบอร์โทรศัพท์ / Email" required>
-                    </div>
-
-                    <div class="field">
-                        <label>ประเภทเรื่องร้องเรียน *</label>
-                        <select id="category" required>
-                            <option value="">-- เลือกประเภท --</option>
-                            <option>บริการ / การให้บริการ</option>
-                            <option>สถานที่ / สิ่งอำนวยความสะดวก</option>
-                            <option>การเรียน / การศึกษา</option>
-                            <option>บุคลากร / เจ้าหน้าที่</option>
-                            <option>ระบบสารสนเทศ / เทคโนโลยี</option>
-                            <option>อื่น ๆ</option>
+            <form id="complaintForm" onsubmit="handleFormSubmit(event)" class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl shadow-indigo-950/5 space-y-6">
+                
+                <!-- Category & Urgency -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">หมวดหมู่เรื่องร้องเรียน <span class="text-rose-500">*</span></label>
+                        <select id="category" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-sm">
+                            <option value="">-- เลือกหมวดหมู่ --</option>
+                            <option value="อาคารสถานที่ / สิ่งอำนวยความสะดวก">🏢 อาคารสถานที่ / สิ่งอำนวยความสะดวก</option>
+                            <option value="ระบบไอที / อุปกรณ์">💻 ระบบไอที / อุปกรณ์</option>
+                            <option value="การให้บริการของเจ้าหน้าที่">🤝 การให้บริการของเจ้าหน้าที่</option>
+                            <option value="ข้อเสนอแนะทั่วไป">💡 ข้อเสนอแนะทั่วไป</option>
+                            <option value="อื่นๆ">❓ อื่นๆ</option>
                         </select>
                     </div>
-
-                    <div class="field">
-                        <label>ระดับความเร่งด่วน</label>
-                        <select id="priority">
-                            <option>ปกติ</option>
-                            <option>เร่งด่วน</option>
-                            <option>เร่งด่วนมาก</option>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">ระดับความเร่งด่วน <span class="text-rose-500">*</span></label>
+                        <select id="priority" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-sm">
+                            <option value="ปกติ">🟢 ปกติ (1-3 วันทำการ)</option>
+                            <option value="ด่วน">🟡 ด่วน (ภายใน 24 ชม.)</option>
+                            <option value="ด่วนที่สุด">🔴 ด่วนที่สุด (แก้ไขทันที)</option>
                         </select>
-                    </div>
-
-                    <div class="field full">
-                        <label>หัวข้อร้องเรียน *</label>
-                        <input type="text" id="title" placeholder="เช่น ปัญหาการให้บริการ" required>
-                    </div>
-
-                    <div class="field full">
-                        <label>รายละเอียด *</label>
-                        <textarea id="detail" placeholder="อธิบายปัญหา วันเวลา สถานที่ และรายละเอียดที่เกี่ยวข้อง" required></textarea>
                     </div>
                 </div>
 
-                <label class="check">
-                    <input type="checkbox" required>
-                    ยืนยันว่าข้อมูลที่แจ้งเป็นความจริง
-                </label>
+                <!-- Subject -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">หัวข้อเรื่อง <span class="text-rose-500">*</span></label>
+                    <input type="text" id="subject" required placeholder="ระบุหัวข้อเรื่องย่อๆ" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-sm">
+                </div>
 
-                <div class="form-bottom">
-                    <span>🔐 ข้อมูลจะถูกเก็บไว้ใน Browser เครื่องนี้</span>
-                    <button type="submit" class="primary-btn">ส่งเรื่องร้องเรียน →</button>
+                <!-- Description -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">รายละเอียดเรื่องร้องเรียน <span class="text-rose-500">*</span></label>
+                    <textarea id="description" required rows="4" placeholder="ระบุรายละเอียด เหตุการณ์ สถานที่ หรือเวลาที่เกิดปัญหาให้ชัดเจน..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-sm resize-none"></textarea>
+                </div>
+
+                <!-- Anonymous Switch & Contact Info -->
+                <div class="p-5 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-semibold text-slate-800">ส่งแบบไม่ระบุตัวตน (Anonymous)</span>
+                            <p class="text-xs text-slate-500">ข้อมูลของคุณจะถูกปิดเป็นความลับสูงสุด</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="isAnonymous" onchange="toggleAnonymous(this.checked)" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                        </label>
+                    </div>
+
+                    <div id="contactFields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <input type="text" id="fullname" placeholder="ชื่อ-นามสกุล ผู้แจ้ง" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <input type="text" id="contact" placeholder="เบอร์โทรศัพท์ / อีเมล" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-xl shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>ส่งเรื่องร้องเรียน</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- TAB 2: TRACKING (ติดตามสถานะ) -->
+        <section id="sec-track" class="hidden space-y-6">
+            <div class="text-center max-w-lg mx-auto mb-8">
+                <h2 class="text-3xl font-bold text-slate-900">ติดตามสถานะเรื่องร้องเรียน</h2>
+                <p class="text-slate-500 text-sm mt-1">กรอกรหัสติดตาม (Ticket ID) เพื่อตรวจสอบความคืบหน้า</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl max-w-xl mx-auto space-y-6">
+                <div class="flex gap-2">
+                    <input type="text" id="trackInput" placeholder="เช่น TK-8821" class="flex-1 px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase tracking-wider font-semibold">
+                    <button onclick="trackComplaint()" class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-medium hover:bg-indigo-700 transition-all text-sm shadow-md shadow-indigo-500/20">
+                        ค้นหา
+                    </button>
+                </div>
+
+                <!-- Tracking Result Container -->
+                <div id="trackResult" class="hidden border-t border-slate-200 pt-6 space-y-4">
+                    <!-- Dynamic Result Inserted Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ADMIN DASHBOARD (ส่วนจัดการสำหรับแอดมิน) -->
+        <section id="sec-admin" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Admin Dashboard</h2>
+                    <p class="text-slate-500 text-xs">จัดการเรื่องร้องเรียนและเปลี่ยนสถานะแบบ Real-time</p>
+                </div>
+                <button onclick="clearAllData()" class="text-xs text-rose-500 hover:text-rose-700 underline font-medium">
+                    <i class="fa-solid fa-trash-can mr-1"></i>ล้างข้อมูลจำลองทั้งหมด
+                </button>
+            </div>
+
+            <!-- Stats Widgets -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-inbox"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">เรื่องทั้งหมด</p>
+                        <p id="stat-total" class="text-2xl font-bold text-slate-800">0</p>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">กำลังดำเนินการ</p>
+                        <p id="stat-pending" class="text-2xl font-bold text-slate-800">0</p>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">แก้ไขเสร็จสิ้น</p>
+                        <p id="stat-resolved" class="text-2xl font-bold text-slate-800">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint List Table -->
+            <div class="glass-card rounded-2xl overflow-hidden shadow-lg border border-slate-200/80">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-100/80 text-slate-600 uppercase font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-4">รหัส Ticket</th>
+                                <th class="p-4">หัวข้อเรื่อง / หมวดหมู่</th>
+                                <th class="p-4">ผู้แจ้ง</th>
+                                <th class="p-4">ความเร่งด่วน</th>
+                                <th class="p-4">สถานะ</th>
+                                <th class="p-4 text-center">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="divide-y divide-slate-100 bg-white/60">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Admin Login -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center space-y-1">
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mx-auto mb-2">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">เข้าสู่ระบบแอดมิน</h3>
+                <p class="text-xs text-slate-500">กรอกข้อมูลเพื่อเข้าสู่ระบบจัดการหลังบ้าน</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">ชื่อผู้ใช้งาน</label>
+                    <input type="text" id="adminUser" required placeholder="admin" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">รหัสผ่าน</label>
+                    <input type="password" id="adminPass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <p id="adminAuthError" class="text-xs text-rose-500 hidden text-center font-medium">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm transition-all shadow-md shadow-indigo-500/20">
+                    เข้าสู่ระบบ
+                </button>
+                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-[11px] text-center text-slate-400">
+                    เดโม: Username: <span class="font-mono text-slate-700 font-semibold">admin</span> | Password: <span class="font-mono text-slate-700 font-semibold">admin123</span>
                 </div>
             </form>
         </div>
-    </section>
-
-    <section class="section">
-        <div class="section-title">
-            <h2>🔎 ติดตามเรื่องร้องเรียน</h2>
-            <p>กรอกเลขที่คำร้องที่ได้รับหลังจากส่งเรื่อง</p>
-        </div>
-
-        <div class="card">
-            <div class="track-box">
-                <input type="text" id="ticketInput" placeholder="เช่น CMP-2026-0001">
-                <button class="primary-btn" onclick="trackComplaint()">ค้นหา</button>
-            </div>
-            <div id="trackResult"></div>
-        </div>
-    </section>
-
-    <section class="section" id="dashboard">
-        <div class="section-title">
-            <h2>📊 Dashboard</h2>
-            <p>สรุปข้อมูลเรื่องร้องเรียน</p>
-        </div>
-
-        <div class="dashboard">
-            <div class="stat">
-                <div class="stat-title">เรื่องทั้งหมด</div>
-                <div class="stat-number" id="total">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">รอตรวจสอบ</div>
-                <div class="stat-number" id="pending">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">กำลังดำเนินการ</div>
-                <div class="stat-number" id="progress">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">ดำเนินการแล้ว</div>
-                <div class="stat-number" id="done">0</div>
-            </div>
-        </div>
-
-        <div class="card complaint-list">
-            <h3>📋 เรื่องร้องเรียนล่าสุด</h3>
-            <div id="complaintList"></div>
-        </div>
-    </section>
-
-</main>
-
-<footer>
-    ComplaintHub © 2026<br>
-    ระบบต้นแบบสำหรับการเรียนรู้ HTML / CSS / JavaScript
-</footer>
-
-<div class="modal" id="successModal">
-    <div class="modal-box">
-        <div class="success-icon">✓</div>
-        <h2>ส่งเรื่องสำเร็จ</h2>
-        <p style="color:#8195ab;margin-top:8px">เลขที่คำร้องของคุณ</p>
-        <div class="ticket" id="ticketCode"></div>
-        <p style="color:#71869c;font-size:12px;margin-bottom:20px">กรุณาเก็บเลขนี้ไว้สำหรับติดตามเรื่อง</p>
-        <button class="primary-btn" onclick="closeModal()">ตกลง</button>
     </div>
-</div>
 
-<script>
-let complaints = [];
-try {
-    complaints = JSON.parse(localStorage.getItem("complaints")) || [];
-} catch (e) {
-    complaints = [];
-}
+    <!-- Modal Notification Success -->
+    <div id="successModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl transform transition-all">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">ส่งเรื่องร้องเรียนสำเร็จ!</h3>
+            <p class="text-xs text-slate-500">กรุณาบันทึกรหัสติดตามนี้ไว้เพื่อตรวจสอบความคืบหน้า</p>
+            <div class="p-3 bg-slate-100 rounded-2xl font-mono text-lg font-bold text-indigo-600 tracking-wider" id="modalTicketId">
+                #TK-XXXX
+            </div>
+            <button onclick="closeModal()" class="w-full py-3 bg-slate-900 text-white rounded-xl font-medium text-sm hover:bg-slate-800 transition-all">
+                ตกลง
+            </button>
+        </div>
+    </div>
 
-function generateTicket() {
-    let number = String(complaints.length + 1).padStart(4, "0");
-    return "CMP-2026-" + number;
-}
+    <!-- JavaScript Application Logic -->
+    <script>
+        const STORAGE_KEY = 'gram_complaints_data';
+        let isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
 
-document.getElementById("complaintForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+        // Initialize App State
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+        });
 
-    let complaint = {
-        ticket: generateTicket(),
-        name: document.getElementById("name").value,
-        contact: document.getElementById("contact").value,
-        category: document.getElementById("category").value,
-        priority: document.getElementById("priority").value,
-        title: document.getElementById("title").value,
-        detail: document.getElementById("detail").value,
-        status: "รอตรวจสอบ",
-        date: new Date().toLocaleDateString("th-TH")
-    };
+        function getComplaints() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        }
 
-    complaints.push(complaint);
+        function saveComplaints(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
 
-    try {
-        localStorage.setItem("complaints", JSON.stringify(complaints));
-    } catch (e) {
-        console.error("Local storage saving error:", e);
-    }
+        // Auth Logic
+        function updateAuthUI() {
+            const logoutBtn = document.getElementById('adminLogoutBtn');
+            const lockIcon = document.getElementById('adminLockIcon');
+            
+            if (isAdminLoggedIn) {
+                logoutBtn.classList.remove('hidden');
+                lockIcon.className = "fa-solid fa-circle-check text-[10px] text-emerald-500";
+            } else {
+                logoutBtn.classList.add('hidden');
+                lockIcon.className = "fa-solid fa-lock text-[10px] text-slate-400";
+            }
+        }
 
-    document.getElementById("ticketCode").textContent = complaint.ticket;
-    document.getElementById("successModal").classList.add("show");
-    document.getElementById("complaintForm").reset();
+        function openAdminModal() {
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+            document.getElementById('adminLoginModal').classList.add('flex');
+            document.getElementById('adminAuthError').classList.add('hidden');
+        }
 
-    updateDashboard();
-});
+        function closeAdminModal() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+            document.getElementById('adminLoginModal').classList.remove('flex');
+        }
 
-function trackComplaint() {
-    let ticket = document.getElementById("ticketInput").value.trim().toUpperCase();
-    let result = document.getElementById("trackResult");
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
 
-    let complaint = complaints.find(item => item.ticket === ticket);
+            if (user === 'admin' && pass === 'admin123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                closeAdminModal();
+                updateAuthUI();
+                switchTab('admin');
+            } else {
+                document.getElementById('adminAuthError').classList.remove('hidden');
+            }
+        }
 
-    if (!complaint) {
-        result.innerHTML = `
-        <div class="result">
-            ❌ ไม่พบเลขที่คำร้อง
-            <p>กรุณาตรวจสอบเลขที่คำร้องอีกครั้ง</p>
-        </div>`;
-        return;
-    }
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('isAdminLoggedIn');
+            updateAuthUI();
+            switchTab('submit');
+        }
 
-    let statusClass = "pending";
-    if (complaint.status === "กำลังดำเนินการ") statusClass = "progress";
-    if (complaint.status === "ดำเนินการแล้ว") statusClass = "done";
-    if (complaint.status === "ไม่รับเรื่อง") statusClass = "cancel";
+        // Tab Switcher with Auth Gate
+        function switchTab(tab) {
+            if (tab === 'admin' && !isAdminLoggedIn) {
+                openAdminModal();
+                return;
+            }
 
-    result.innerHTML = `
-    <div class="result">
-        <h3>${escapeHTML(complaint.title)}</h3>
-        <p>เลขที่คำร้อง: ${complaint.ticket}</p>
-        <p>ประเภท: ${escapeHTML(complaint.category)}</p>
-        <p>วันที่: ${complaint.date}</p>
-        <span class="status ${statusClass}">${complaint.status}</span>
-        <p style="margin-top:15px">${escapeHTML(complaint.detail)}</p>
-    </div>`;
-}
+            ['submit', 'track', 'admin'].forEach(t => {
+                document.getElementById(`sec-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                btn.className = "px-4 py-2 rounded-xl transition-all text-slate-600 hover:text-indigo-600";
+            });
 
-function updateDashboard() {
-    document.getElementById("total").textContent = complaints.length;
-    document.getElementById("pending").textContent = complaints.filter(x => x.status === "รอตรวจสอบ").length;
-    document.getElementById("progress").textContent = complaints.filter(x => x.status === "กำลังดำเนินการ").length;
-    document.getElementById("done").textContent = complaints.filter(x => x.status === "ดำเนินการแล้ว").length;
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.className = "px-4 py-2 rounded-xl transition-all shadow-sm bg-white text-indigo-600 font-semibold";
 
-    renderList();
-}
+            if (tab === 'admin') renderAdminDashboard();
+        }
 
-function renderList() {
-    let list = document.getElementById("complaintList");
+        // Toggle Anonymous Fields
+        function toggleAnonymous(isAnon) {
+            const fields = document.getElementById('contactFields');
+            if(isAnon) {
+                fields.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                fields.classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
 
-    if (complaints.length === 0) {
-        list.innerHTML = `
-        <p style="color:#71869c;text-align:center;padding:30px;">
-            ยังไม่มีเรื่องร้องเรียน
-        </p>`;
-        return;
-    }
+        // Handle Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
 
-    list.innerHTML = complaints
-        .slice()
-        .reverse()
-        .map(item => {
-            let statusClass = "pending";
-            if (item.status === "กำลังดำเนินการ") statusClass = "progress";
-            if (item.status === "ดำเนินการแล้ว") statusClass = "done";
-            if (item.status === "ไม่รับเรื่อง") statusClass = "cancel";
+            const isAnon = document.getElementById('isAnonymous').checked;
+            const ticketId = 'TK-' + Math.floor(1000 + Math.random() * 9000);
+            
+            const newComplaint = {
+                id: ticketId,
+                category: document.getElementById('category').value,
+                priority: document.getElementById('priority').value,
+                subject: document.getElementById('subject').value,
+                description: document.getElementById('description').value,
+                fullname: isAnon ? 'ไม่ระบุตัวตน' : (document.getElementById('fullname').value || 'ไม่ระบุชื่อ'),
+                contact: isAnon ? '-' : (document.getElementById('contact').value || '-'),
+                status: 'รับเรื่องแล้ว',
+                date: new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' })
+            };
 
-            return `
-            <div class="complaint-item">
-                <div class="complaint-top">
-                    <div>
-                        <div class="complaint-title">${escapeHTML(item.title)}</div>
-                        <div class="complaint-meta">
-                            ${item.ticket} • ${escapeHTML(item.category)} • ${item.date}
-                        </div>
+            const complaints = getComplaints();
+            complaints.unshift(newComplaint);
+            saveComplaints(complaints);
+
+            // Show Success Modal
+            document.getElementById('modalTicketId').innerText = `#${ticketId}`;
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+
+            // Reset Form
+            document.getElementById('complaintForm').reset();
+            toggleAnonymous(false);
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('flex');
+        }
+
+        // Track Ticket Status
+        function trackComplaint() {
+            const input = document.getElementById('trackInput').value.trim().toUpperCase().replace('#', '');
+            const resultBox = document.getElementById('trackResult');
+            const complaints = getComplaints();
+
+            const found = complaints.find(c => c.id === input);
+
+            resultBox.classList.remove('hidden');
+            if(!found) {
+                resultBox.innerHTML = `
+                    <div class="text-center py-6 text-slate-400">
+                        <i class="fa-solid fa-circle-xmark text-3xl mb-2 text-rose-400"></i>
+                        <p class="text-sm font-medium">ไม่พบข้อมูลรหัส Ticket นี้</p>
                     </div>
-                    <span class="status ${statusClass}">${item.status}</span>
+                `;
+                return;
+            }
+
+            let statusBadge = 'bg-amber-100 text-amber-700';
+            if(found.status === 'กำลังดำเนินการ') statusBadge = 'bg-blue-100 text-blue-700';
+            if(found.status === 'แก้ไขเรียบร้อย') statusBadge = 'bg-emerald-100 text-emerald-700';
+
+            resultBox.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-xs font-bold text-slate-400">#${found.id}</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusBadge}">${found.status}</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base">${found.subject}</h4>
+                    <p class="text-xs text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">${found.description}</p>
+                    <div class="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-slate-100">
+                        <span>หมวดหมู่: ${found.category}</span>
+                        <span>วันที่: ${found.date}</span>
+                    </div>
                 </div>
-            </div>`;
-        })
-        .join("");
-}
+            `;
+        }
 
-function closeModal() {
-    document.getElementById("successModal").classList.remove("show");
-}
+        // Render Admin Dashboard Data
+        function renderAdminDashboard() {
+            const complaints = getComplaints();
+            const tbody = document.getElementById('adminTableBody');
 
-function goToForm() {
-    document.getElementById("formSection").scrollIntoView({ behavior: "smooth" });
-}
+            document.getElementById('stat-total').innerText = complaints.length;
+            document.getElementById('stat-pending').innerText = complaints.filter(c => c.status !== 'แก้ไขเรียบร้อย').length;
+            document.getElementById('stat-resolved').innerText = complaints.filter(c => c.status === 'แก้ไขเรียบร้อย').length;
 
-function escapeHTML(text) {
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(//>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+            if(complaints.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">ยังไม่มีรายการร้องเรียนในระบบ</td></tr>`;
+                return;
+            }
 
-updateDashboard();
-</script>
+            tbody.innerHTML = complaints.map(c => {
+                let priorityClass = 'bg-slate-100 text-slate-600';
+                if(c.priority === 'ด่วน') priorityClass = 'bg-amber-50 text-amber-600 border border-amber-200';
+                if(c.priority === 'ด่วนที่สุด') priorityClass = 'bg-rose-50 text-rose-600 border border-rose-200';
 
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-all">
+                        <td class="p-4 font-mono font-bold text-indigo-600">#${c.id}</td>
+                        <td class="p-4">
+                            <div class="font-semibold text-slate-800">${c.subject}</div>
+                            <div class="text-xs text-slate-400">${c.category}</div>
+                        </td>
+                        <td class="p-4 font-medium text-slate-600">${c.fullname}</td>
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-medium ${priorityClass}">${c.priority}</span></td>
+                        <td class="p-4">
+                            <select onchange="updateStatus('${c.id}', this.value)" class="text-xs font-medium px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="รับเรื่องแล้ว" ${c.status === 'รับเรื่องแล้ว' ? 'selected' : ''}>🟠 รับเรื่องแล้ว</option>
+                                <option value="กำลังดำเนินการ" ${c.status === 'กำลังดำเนินการ' ? 'selected' : ''}>🔵 กำลังดำเนินการ</option>
+                                <option value="แก้ไขเรียบร้อย" ${c.status === 'แก้ไขเรียบร้อย' ? 'selected' : ''}>🟢 แก้ไขเรียบร้อย</option>
+                            </select>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="deleteTicket('${c.id}')" class="w-8 h-8 rounded-xl hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition-all">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateStatus(id, newStatus) {
+            let complaints = getComplaints();
+            complaints = complaints.map(c => c.id === id ? {...c, status: newStatus} : c);
+            saveComplaints(complaints);
+            renderAdminDashboard();
+        }
+
+        function deleteTicket(id) {
+            if(confirm(`คุณต้องการลบรายการ #${id} ใช่หรือไม่?`)) {
+                let complaints = getComplaints();
+                complaints = complaints.filter(c => c.id !== id);
+                saveComplaints(complaints);
+                renderAdminDashboard();
+            }
+        }
+
+        function clearAllData() {
+            if(confirm('คุณต้องการลบข้อมูลจำลองทั้งหมดใช่หรือไม่?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderAdminDashboard();
+            }
+        }
+    </script>
 </body>
 </html>
