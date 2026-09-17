@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplaintHub - ระบบร้องเรียนออนไลน์</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Kanit', sans-serif;
+    background: #050b14;
+    color: #fff;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(0, 212, 255, .18), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, .18), transparent 30%),
+        linear-gradient(135deg, #050b14, #0b1424, #090b19);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: .08;
+    background-image:
+        linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 18px 0;
+    background: rgba(5, 11, 20, .8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    box-shadow: 0 0 30px rgba(0,212,255,.3);
+}
+
+.logo span {
+    color: #00d4ff;
+}
+
+.admin-btn {
+    color: #a8b7ca;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.hero {
+    min-height: 580px;
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.tag {
+    color: #00d4ff;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 7vw, 80px);
+    line-height: 1;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    background: linear-gradient(90deg, #00d4ff, #8b5cf6);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #91a5bb;
+    line-height: 1.9;
+    font-size: 17px;
+    max-width: 650px;
+}
+
+.primary-btn {
+    border: none;
+    color: white;
+    background: linear-gradient(135deg, #00c6ff, #7c3aed);
+    padding: 13px 22px;
+    border-radius: 13px;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,198,255,.25);
+}
+
+.hero .primary-btn {
+    margin-top: 25px;
+}
+
+.hero-card {
+    padding: 40px;
+    border-radius: 28px;
+    background: rgba(13, 28, 46, .7);
+    border: 1px solid rgba(255,255,255,.1);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 30px 80px rgba(0,0,0,.3);
+}
+
+.hero-icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.hero-card h2 {
+    margin-bottom: 10px;
+}
+
+.hero-card p {
+    font-size: 14px;
+    color: #8196ac;
+}
+
+.line {
+    height: 1px;
+    background: rgba(255,255,255,.1);
+    margin: 25px 0;
+}
+
+.section {
+    margin: 80px 0;
+}
+
+.section-title {
+    margin-bottom: 22px;
+}
+
+.section-title h2 {
+    font-size: 30px;
+}
+
+.section-title p {
+    color: #71869d;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.card {
+    padding: 30px;
+    border-radius: 25px;
+    background: rgba(11, 27, 44, .75);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    color: #b8c8d9;
+    font-size: 14px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #071522;
+    border: 1px solid #1c354d;
+    color: white;
+    font-family: inherit;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #00d4ff;
+    box-shadow: 0 0 0 3px rgba(0,212,255,.08);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.check {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+    color: #71869c;
+}
+
+.check input {
+    width: auto;
+}
+
+.form-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.form-bottom span {
+    color: #5f758b;
+    font-size: 12px;
+}
+
+.track-box {
+    display: flex;
+    gap: 10px;
+}
+
+.track-box input {
+    flex: 1;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.result h3 {
+    margin-bottom: 8px;
+}
+
+.result p {
+    color: #8195ab;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.status {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.pending {
+    color: #fbbf24;
+    background: rgba(251,191,36,.1);
+}
+
+.progress {
+    color: #00d4ff;
+    background: rgba(0,212,255,.1);
+}
+
+.done {
+    color: #34d399;
+    background: rgba(52,211,153,.1);
+}
+
+.cancel {
+    color: #fb7185;
+    background: rgba(251,113,133,.1);
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.stat {
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(12,29,47,.75);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.stat-title {
+    color: #70859b;
+    font-size: 13px;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.stat:nth-child(1) .stat-number { color: #00d4ff; }
+.stat:nth-child(2) .stat-number { color: #fbbf24; }
+.stat:nth-child(3) .stat-number { color: #a78bfa; }
+.stat:nth-child(4) .stat-number { color: #34d399; }
+
+.complaint-list {
+    margin-top: 25px;
+}
+
+.complaint-item {
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.complaint-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.complaint-title {
+    font-weight: 500;
+}
+
+.complaint-meta {
+    color: #71869c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.75);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    width: min(450px,100%);
+    padding: 35px;
+    border-radius: 25px;
+    background: #0d1d2f;
+    border: 1px solid #29445e;
+    text-align: center;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    margin: auto auto 15px;
+    border-radius: 50%;
+    color: #34d399;
+    background: rgba(52,211,153,.1);
+    font-size: 30px;
+}
+
+.ticket {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 12px;
+    background: #06111e;
+    color: #00d4ff;
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+footer {
+    padding: 30px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,.08);
+    color: #52677d;
+    font-size: 12px;
+}
+
+@media(max-width:850px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 70px 0;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .field.full {
+        grid-column: auto;
+    }
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width:550px) {
+    .hero h1 {
+        font-size: 48px;
+    }
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    .track-box {
+        flex-direction: column;
+    }
+    .form-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .complaint-top {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            Complaint<span>Hub</span>
+        </div>
+        <a href="#dashboard" class="admin-btn">Dashboard</a>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div>
+            <div class="tag">ONLINE COMPLAINT SYSTEM</div>
+            <h1>เสียงของคุณ<br><span>มีความหมาย</span></h1>
+            <p>ระบบร้องเรียนออนไลน์ที่ช่วยให้คุณสามารถแจ้งปัญหา ส่งหลักฐาน และติดตามสถานะเรื่องร้องเรียนได้อย่างสะดวกและรวดเร็ว</p>
+            <button class="primary-btn" onclick="goToForm()">＋ แจ้งเรื่องร้องเรียน</button>
+        </div>
+
+        <div class="hero-card">
+            <div class="hero-icon">📢</div>
+            <h2>แจ้งเรื่องได้ง่าย</h2>
+            <p>กรอกข้อมูลออนไลน์ได้ตลอดเวลา</p>
+            <div class="line"></div>
+            <p>🔒 ข้อมูลถูกจัดเก็บใน Browser</p>
+            <div class="line"></div>
+            <p>🔎 สามารถติดตามเรื่องด้วยเลขคำร้อง</p>
+        </div>
+    </section>
+
+    <section class="section" id="formSection">
+        <div class="section-title">
+            <h2>📝 ส่งเรื่องร้องเรียน</h2>
+            <p>กรอกข้อมูลให้ครบถ้วนเพื่อให้สามารถตรวจสอบเรื่องได้</p>
+        </div>
+
+        <div class="card">
+            <form id="complaintForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label>ชื่อผู้ร้องเรียน *</label>
+                        <input type="text" id="name" placeholder="ชื่อ - นามสกุล" required>
+                    </div>
+
+                    <div class="field">
+                        <label>ช่องทางติดต่อ *</label>
+                        <input type="text" id="contact" placeholder="เบอร์โทรศัพท์ / Email" required>
+                    </div>
+
+                    <div class="field">
+                        <label>ประเภทเรื่องร้องเรียน *</label>
+                        <select id="category" required>
+                            <option value="">-- เลือกประเภท --</option>
+                            <option>บริการ / การให้บริการ</option>
+                            <option>สถานที่ / สิ่งอำนวยความสะดวก</option>
+                            <option>การเรียน / การศึกษา</option>
+                            <option>บุคลากร / เจ้าหน้าที่</option>
+                            <option>ระบบสารสนเทศ / เทคโนโลยี</option>
+                            <option>อื่น ๆ</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>ระดับความเร่งด่วน</label>
+                        <select id="priority">
+                            <option>ปกติ</option>
+                            <option>เร่งด่วน</option>
+                            <option>เร่งด่วนมาก</option>
+                        </select>
+                    </div>
+
+                    <div class="field full">
+                        <label>หัวข้อร้องเรียน *</label>
+                        <input type="text" id="title" placeholder="เช่น ปัญหาการให้บริการ" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>รายละเอียด *</label>
+                        <textarea id="detail" placeholder="อธิบายปัญหา วันเวลา สถานที่ และรายละเอียดที่เกี่ยวข้อง" required></textarea>
+                    </div>
+                </div>
+
+                <label class="check">
+                    <input type="checkbox" required>
+                    ยืนยันว่าข้อมูลที่แจ้งเป็นความจริง
+                </label>
+
+                <div class="form-bottom">
+                    <span>🔐 ข้อมูลจะถูกเก็บไว้ใน Browser เครื่องนี้</span>
+                    <button type="submit" class="primary-btn">ส่งเรื่องร้องเรียน →</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">
+            <h2>🔎 ติดตามเรื่องร้องเรียน</h2>
+            <p>กรอกเลขที่คำร้องที่ได้รับหลังจากส่งเรื่อง</p>
+        </div>
+
+        <div class="card">
+            <div class="track-box">
+                <input type="text" id="ticketInput" placeholder="เช่น CMP-2026-0001">
+                <button class="primary-btn" onclick="trackComplaint()">ค้นหา</button>
+            </div>
+            <div id="trackResult"></div>
+        </div>
+    </section>
+
+    <section class="section" id="dashboard">
+        <div class="section-title">
+            <h2>📊 Dashboard</h2>
+            <p>สรุปข้อมูลเรื่องร้องเรียน</p>
+        </div>
+
+        <div class="dashboard">
+            <div class="stat">
+                <div class="stat-title">เรื่องทั้งหมด</div>
+                <div class="stat-number" id="total">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">รอตรวจสอบ</div>
+                <div class="stat-number" id="pending">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">กำลังดำเนินการ</div>
+                <div class="stat-number" id="progress">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">ดำเนินการแล้ว</div>
+                <div class="stat-number" id="done">0</div>
+            </div>
+        </div>
+
+        <div class="card complaint-list">
+            <h3>📋 เรื่องร้องเรียนล่าสุด</h3>
+            <div id="complaintList"></div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    ComplaintHub © 2026<br>
+    ระบบต้นแบบสำหรับการเรียนรู้ HTML / CSS / JavaScript
+</footer>
+
+<div class="modal" id="successModal">
+    <div class="modal-box">
+        <div class="success-icon">✓</div>
+        <h2>ส่งเรื่องสำเร็จ</h2>
+        <p style="color:#8195ab;margin-top:8px">เลขที่คำร้องของคุณ</p>
+        <div class="ticket" id="ticketCode"></div>
+        <p style="color:#71869c;font-size:12px;margin-bottom:20px">กรุณาเก็บเลขนี้ไว้สำหรับติดตามเรื่อง</p>
+        <button class="primary-btn" onclick="closeModal()">ตกลง</button>
+    </div>
+</div>
+
+<script>
+let complaints = [];
+try {
+    complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+} catch (e) {
+    complaints = [];
+}
+
+function generateTicket() {
+    let number = String(complaints.length + 1).padStart(4, "0");
+    return "CMP-2026-" + number;
+}
+
+document.getElementById("complaintForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let complaint = {
+        ticket: generateTicket(),
+        name: document.getElementById("name").value,
+        contact: document.getElementById("contact").value,
+        category: document.getElementById("category").value,
+        priority: document.getElementById("priority").value,
+        title: document.getElementById("title").value,
+        detail: document.getElementById("detail").value,
+        status: "รอตรวจสอบ",
+        date: new Date().toLocaleDateString("th-TH")
+    };
+
+    complaints.push(complaint);
+
+    try {
+        localStorage.setItem("complaints", JSON.stringify(complaints));
+    } catch (e) {
+        console.error("Local storage saving error:", e);
+    }
+
+    document.getElementById("ticketCode").textContent = complaint.ticket;
+    document.getElementById("successModal").classList.add("show");
+    document.getElementById("complaintForm").reset();
+
+    updateDashboard();
+});
+
+function trackComplaint() {
+    let ticket = document.getElementById("ticketInput").value.trim().toUpperCase();
+    let result = document.getElementById("trackResult");
+
+    let complaint = complaints.find(item => item.ticket === ticket);
+
+    if (!complaint) {
+        result.innerHTML = `
+        <div class="result">
+            ❌ ไม่พบเลขที่คำร้อง
+            <p>กรุณาตรวจสอบเลขที่คำร้องอีกครั้ง</p>
+        </div>`;
+        return;
+    }
+
+    let statusClass = "pending";
+    if (complaint.status === "กำลังดำเนินการ") statusClass = "progress";
+    if (complaint.status === "ดำเนินการแล้ว") statusClass = "done";
+    if (complaint.status === "ไม่รับเรื่อง") statusClass = "cancel";
+
+    result.innerHTML = `
+    <div class="result">
+        <h3>${escapeHTML(complaint.title)}</h3>
+        <p>เลขที่คำร้อง: ${complaint.ticket}</p>
+        <p>ประเภท: ${escapeHTML(complaint.category)}</p>
+        <p>วันที่: ${complaint.date}</p>
+        <span class="status ${statusClass}">${complaint.status}</span>
+        <p style="margin-top:15px">${escapeHTML(complaint.detail)}</p>
+    </div>`;
+}
+
+function updateDashboard() {
+    document.getElementById("total").textContent = complaints.length;
+    document.getElementById("pending").textContent = complaints.filter(x => x.status === "รอตรวจสอบ").length;
+    document.getElementById("progress").textContent = complaints.filter(x => x.status === "กำลังดำเนินการ").length;
+    document.getElementById("done").textContent = complaints.filter(x => x.status === "ดำเนินการแล้ว").length;
+
+    renderList();
+}
+
+function renderList() {
+    let list = document.getElementById("complaintList");
+
+    if (complaints.length === 0) {
+        list.innerHTML = `
+        <p style="color:#71869c;text-align:center;padding:30px;">
+            ยังไม่มีเรื่องร้องเรียน
+        </p>`;
+        return;
+    }
+
+    list.innerHTML = complaints
+        .slice()
+        .reverse()
+        .map(item => {
+            let statusClass = "pending";
+            if (item.status === "กำลังดำเนินการ") statusClass = "progress";
+            if (item.status === "ดำเนินการแล้ว") statusClass = "done";
+            if (item.status === "ไม่รับเรื่อง") statusClass = "cancel";
+
+            return `
+            <div class="complaint-item">
+                <div class="complaint-top">
+                    <div>
+                        <div class="complaint-title">${escapeHTML(item.title)}</div>
+                        <div class="complaint-meta">
+                            ${item.ticket} • ${escapeHTML(item.category)} • ${item.date}
+                        </div>
+                    </div>
+                    <span class="status ${statusClass}">${item.status}</span>
+                </div>
+            </div>`;
+        })
+        .join("");
+}
+
+function closeModal() {
+    document.getElementById("successModal").classList.remove("show");
+}
+
+function goToForm() {
+    document.getElementById("formSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function escapeHTML(text) {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(//>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+updateDashboard();
+</script>
+
+</body>
+</html>
